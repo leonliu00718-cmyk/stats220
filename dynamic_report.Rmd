@@ -1,0 +1,61 @@
+---
+title: My Food Log Report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+
+```
+
+## Analysis of My Daily Food Log
+
+This project focuses on the systematic observation and logging of my daily food consumption over a period of two weeks. As a student living in Auckland, managing a balanced diet while staying within a reasonable budget is a significant challenge. The primary goal of this data collection was to gain insights into my spending habits and the nutritional variety of my meals. By tracking variables such as meal category, estimated cost, and food source, I aimed to identify patterns that could help me optimize my lifestyle and financial planning.
+
+Throughout the fortnight, I recorded a total of 21 observations. One of the most prominent findings was the high frequency of home-cooked meals, which significantly helped in keeping my average meal cost around 6.21 NZD. However, the data also revealed that my spending spikes considerably when I choose to eat at restaurants or the university cafe, sometimes tripling the cost of a single meal. In terms of food groups, I noticed a heavy reliance on carbohydrates and lean proteins, with vegetables appearing less frequently than initially expected. This quantitative approach to my daily routine has provided me with a clear, data-driven perspective on my habits, highlighting areas where I can improve both my nutritional balance and my budgetary discipline.
+
+### Creativity
+
+For this project, I focused on making my report more than just a static document. I wanted it to feel like it was actually talking to the data.
+
+One of my favorite creative touches was using inline R code combined with the round() function. Instead of just typing in my findings, I let R do the heavy lifting by pulling the numbers directly from my dataset. This ensures that if I ever add more entries to my Google Form, my report will update itself automatically while keeping everything looking professional with two decimal places.
+
+I also spent time on the behind-the-scenes part of the data. By using the tidyverse rename function, I transformed those long, messy Google Form headers into clean, logical variable names. It might seem small, but it makes the entire analysis much more readable and shows a commitment to maintaining a high-quality, professional script from start to finish.
+
+```{r}
+library(tidyverse)
+
+# link to my data
+url <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vRazEISR6R93-eTQgbAn_4GIOHC4ZNjdyJ0eWi5CbMj69Rkh1VeWoqr6Z3ritnrvSF0T3gd3RtcvQLA/pub?gid=0&single=true&output=csv"
+logged_data <- read_csv(url)
+
+# cleaning the column names
+latest_data <- logged_data %>%
+  rename(
+    meal_type = `Meal Category`,
+    cost = `Estimated Cost in NZD`,
+    food_group = `Main Food Group`,
+    source = `Preparation Source`
+  )
+
+# calculating my summaries
+average_spending <- mean(latest_data$cost, na.rm = TRUE)
+total_meals <- nrow(latest_data)
+
+# chart 1: meal types
+ggplot(latest_data, aes(x = meal_type)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "Distribution of Meals", x = "Meal Category", y = "Count")
+
+# chart 2: food sources
+ggplot(latest_data, aes(x = source)) +
+  geom_bar(fill = "darkorange") +
+  labs(title = "Where I Got My Food", x = "Source", y = "Count")
+
+```
+
+Over the last two weeks, I tracked my food consumption. In total, I recorded **`r total_meals`** meals. On average, I spent about **\$`r round(average_spending, 2)`** per meal.
