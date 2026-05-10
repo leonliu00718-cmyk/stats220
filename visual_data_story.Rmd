@@ -1,0 +1,161 @@
+---
+title: "What Does My Diet Really Cost?"
+author: "Zicheng Liu"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+```{css, echo=FALSE}
+/* ── Blue-green colour theme ── */
+:root {
+  --teal-dark:  #0F6E56;
+  --teal-mid:   #1D9E75;
+  --teal-light: #5DCAA5;
+  --blue-mid:   #378ADD;
+  --blue-light: #9FE1CB;
+  --bg:         #F4FBFA;
+  --text:       #1a2e28;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+h1.title {
+  color: var(--teal-dark);
+  font-size: 2rem;
+  border-bottom: 3px solid var(--teal-light);
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+}
+
+h4.author, h4.date {
+  color: var(--teal-mid);
+  font-weight: normal;
+  margin: 0.1rem 0;
+}
+
+h2 {
+  color: var(--teal-dark);
+  font-size: 1.4rem;
+  border-left: 5px solid var(--teal-mid);
+  padding-left: 0.7rem;
+  margin-top: 2.5rem;
+  /* required for progressive reveal JS */
+}
+
+p { margin: 0.8rem 0; }
+
+img {
+  width: 100%;
+  max-width: 780px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(15, 110, 86, 0.12);
+  margin: 1rem 0;
+}
+
+.caption {
+  font-size: 0.88rem;
+  color: #4a7a6a;
+  font-style: italic;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.highlight-box {
+  background: var(--blue-light);
+  border-left: 4px solid var(--teal-mid);
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  color: var(--teal-dark);
+}
+```
+
+```{js, echo=FALSE}
+// Progressive reveal — do not remove or edit this block
+window.addEventListener('DOMContentLoaded', function() {
+  var sections = document.querySelectorAll('h2');
+  sections.forEach(function(sec, i) {
+    var content = [];
+    var el = sec.nextElementSibling;
+    while (el && el.tagName !== 'H2') {
+      content.push(el);
+      el = el.nextElementSibling;
+    }
+    if (i !== 0) {
+      content.forEach(function(c) { c.style.display = 'none'; });
+      sec.style.cursor = 'pointer';
+      sec.title = 'Click to reveal';
+      sec.addEventListener('click', function() {
+        content.forEach(function(c) {
+          c.style.display = c.style.display === 'none' ? '' : 'none';
+        });
+      });
+    }
+  });
+});
+```
+
+## Introduction
+
+Over three weeks in March 2026, I logged every meal I ate — recording when I ate, what meal it was, the main food group, where the food came from, and how much it cost. The goal was to understand my dietary habits through data. This visual story explores the patterns hiding in my eating habits: how much different meals cost, where the money goes, and how my diet composition shifts across meal types.
+
+## Meal costs vary more than you'd think
+
+Dinner is the most variable meal — some nights I cooked cheaply at home, other nights I ate at a restaurant and spent over $18 on a single sitting. Breakfast is the most consistent and cheapest, almost always under $3.
+
+![Cost distribution across meal categories](plot1.png)
+
+<p class="caption">Figure 1: Boxplot showing the spread of meal costs by category. Points represent individual meals.</p>
+
+The jitter points reveal that restaurant meals pull dinner costs upward — without them, dinner would look much more affordable.
+
+## Restaurant meals cost nearly 3× more than home-cooked
+
+When grouped by preparation source, the difference is stark. Restaurant meals average around $16–18 NZD, while home-cooked meals average just over $5. University Cafe meals sit in the middle at around $13.
+
+![Average meal cost by preparation source](plot2.png)
+
+<p class="caption">Figure 2: Average cost per meal by where the food came from.</p>
+
+<div class="highlight-box">
+💡 Cooking at home saves roughly $10–13 per meal compared to eating out. Over a week, that adds up fast.
+</div>
+
+## Lean protein dominates lunch and dinner
+
+Looking at the food group breakdown, lean protein (chicken, eggs, fish) appears across all meal types but is especially dominant at lunch and dinner. Breakfast leans toward carbohydrates and dairy. Snacks are almost entirely sweets.
+
+![Food group composition by meal category](plot3.png)
+
+<p class="caption">Figure 3: Stacked bar chart showing the proportion of main food groups within each meal category.</p>
+
+This pattern suggests a relatively balanced diet on weekdays, though the snack category could use more nutritious options.
+
+## Spending spikes on weekends
+
+Daily spending was low and steady through the week, then jumped on weekends — driven by restaurant dinners. The point size shows how many meals were logged per day; larger points mean more recorded meals.
+
+![Daily food spending over the observation period](plot4.png)
+
+<p class="caption">Figure 4: Line chart of total daily food spending. Point size reflects meals logged per day.</p>
+
+The two clear spikes align with Saturday evenings (March 21 and March 28), when restaurant dinners were recorded. Weekday spending is mostly $8–15/day from home-cooked meals.
+
+## Takeaways
+
+Three weeks of data tell a clear story: home cooking keeps costs down and nutrition balanced, while weekend restaurant meals account for a disproportionate share of total spending. If I wanted to reduce my food budget, targeting just those two restaurant meals per week would make the biggest difference.
